@@ -43,8 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dec1.cs" />
-    <Compile Include="Dec2.cs" />
+    <Compile Include="Dec1_first.cs" />
+    <Compile Include="Dec1_sec.cs" />
+    <Compile Include="Dec3_first.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

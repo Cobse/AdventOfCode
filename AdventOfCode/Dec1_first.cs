@@ -2,137 +2,76 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AdventOfCode
 {
-    internal class Dec2
+    internal class Dec1_first
     {
-        public string Input { get; set; } = "two1nine\r\neightwothree\r\nabcone2threexyz\r\nxtwone3four\r\n4nineeightseven2\r\nzoneight234\r\n7pqrstsixteen";
 
-        public Dec2()
+        public string Input { get; private set; } = "1abc2\r\npqr3stu8vwx\r\na1b2c3d4e5f\r\ntreb7uchet"; // Input from the website
+
+        public Dec1_first()
         {
-            Console.WriteLine("Dec2");
             Input = GetInput();
-            Run();
+
+            Console.WriteLine("Dec1");
+            var numbers = GetNumbersConcatenated();
+            var sum = AddNumbers(numbers);
+            Console.WriteLine($"Sum of all numbers: {sum}");
             Console.ReadLine();
-
         }
 
-        // In the Input example, the calibration values are 29, 83, 13, 24, 42, 14, and 76. Adding these together produces 281. Digits also have to be included.
 
-        private void Run()
+
+
+
+        // Add a list of numbers together
+        public int AddNumbers(List<int> numbers)
         {
-            var lines = Input.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            var total = 0;
-            foreach (var line in lines)
+            int sum = 0;
+            foreach (int number in numbers)
             {
-#if DEBUG
-                if (line == "51m")
-                {
-                    ;   
-                }
-#endif
-
-
-
-                var wordsAndDigits = Regex.Matches(line, @"[a-zA-Z]+|\d+")
-                    .Cast<Match>()
-                    .Select(m => m.Value)
-                    .ToArray();
-
-
-
-
-                // Compare each word to the dictionary and replace with the digit and add to a new List in the same order. Also add the digits to the list.
-                var digits = new List<int>();
-                foreach (var word in wordsAndDigits)
-                {
-                    if (wordsAndDigits.Length == 1 & Regex.IsMatch(word, @"^\d+$"))
-                    {
-                        digits.Add(int.Parse(word[0].ToString()));
-                        digits.Add(int.Parse(word[word.Length - 1].ToString()));
-                    }
-                    else if(word.Length == 1)
-                    {
-                        if (Char.IsDigit(word, 0))
-                        {
-                            digits.Add(int.Parse(word));
-                        }
-                    }
-                    else if (Regex.IsMatch(word, @"^\d+$"))
-                    {
-                        digits.Add(int.Parse(word[0].ToString()));
-                        digits.Add(int.Parse(word[word.Length - 1].ToString()));
-
-                        //if (Array.IndexOf(wordsAndDigits, word) == 0)
-                        //{
-                        //    digits.Add(int.Parse(word[0].ToString()));
-                        //}
-                        //else
-                        //{
-                        //    digits.Add(int.Parse(word[word.Length - 1].ToString()));
-                        //}
-
-
-
-                    }
-                    else if (_numbers.ContainsKey(word))
-                    {
-                        digits.Add(_numbers[word]);
-                    }
-                    else if (word.Length > 2)
-                    {
-                        try
-                        {
-                            for (int i = 0; i < word.Length; i += 1)
-                            {
-                                string chunk = word.Substring(i, 3);
-                                if (_numbers.ContainsKey(chunk))
-                                {
-                                    int number = _numbers[chunk];
-                                    digits.Add(number);
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-                        
-                    }
-                }
-
-
-                if (digits.Any())
-                {
-                    string number = string.Concat(digits.FirstOrDefault().ToString(), digits.LastOrDefault().ToString());
-                    Console.WriteLine(String.Format("|{0, 40}|{1, 5}|", line, number));
-                    total += int.Parse(number);
-
-                }
-
+                sum += number;
             }
-            Console.WriteLine($"Total: {total}");
-            
+            return sum;
         }
 
-
-        // Create a dictionary of "one" : 1, "two" : 2, etc. stop at nine.
-
-        private Dictionary<string, int> _numbers = new Dictionary<string, int>()
+        // Get the numbers from alle the lines in a input and concatenate them if they are on the same line. Put all of them in a list. 1 and 2 in the first line will be 12. Only th
+        public List<int> GetNumbersConcatenated()
         {
-            {"one", 1},
-            {"two", 2},
-            {"thr", 3},
-            {"fou", 4},
-            {"fiv", 5},
-            {"six", 6},
-            {"sev", 7},
-            {"eig", 8},
-            {"nin", 9}
-        };
+            List<int> numbers = new List<int>();
+            foreach (string line in Input.Split('\r'))
+            {
+                string number = "";
+                foreach (char c in line)
+                {
+                    if (Char.IsDigit(c))
+                    {
+                        number += c;
+                    }
+                }
+                if (number != "")
+                {
+                    if (number.Length == 2)
+                    {
+                        numbers.Add(Int32.Parse(number));
+                    }
+                    else if (number.Length > 2)
+                    {
+                        var numToAdd = string.Concat(number.FirstOrDefault().ToString(), number.LastOrDefault().ToString());
+                        numbers.Add(Int32.Parse(numToAdd));
+                    }
+                    else
+                    {
+                        var numToAdd = string.Concat(number, number);
+                        numbers.Add(Int32.Parse(numToAdd));
+                    }
+
+                }
+            }
+            return numbers;
+        }
 
         private string GetInput()
         {

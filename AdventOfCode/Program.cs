@@ -10,8 +10,14 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            //var dec1 = new Dec1();
-            var dec2 = new Dec2();
+            // First day
+            //var dec1_first = new Dec1_first();
+            //var dec1_sec = new Dec1_sec();
+
+            // Second day
+
+            // Third day
+            var dec3_first = new Dec3_first();
 
         }
     }
