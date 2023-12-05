@@ -10,7 +10,8 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            var dec1 = new Dec1();
+            //var dec1 = new Dec1();
+            var dec2 = new Dec2();
 
         }
     }
